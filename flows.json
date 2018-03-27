@@ -1,0 +1,593 @@
+[
+    {
+        "id": "a148e93f.71c548",
+        "type": "tab",
+        "label": "Bakeout",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4a8b6312.c2f36c",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": false
+    },
+    {
+        "id": "2199cfd8.9aa6b",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#0eb8c0",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            }
+        },
+        "site": {
+            "name": "Yggdrasil Logi",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 44,
+                "sy": 44,
+                "gx": 1,
+                "gy": 1,
+                "cx": 1,
+                "cy": 1,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "f66b31d0.8e554",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Bakeout",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "6a19989.bafc168",
+        "type": "ui_group",
+        "z": "",
+        "name": "Manual Control",
+        "tab": "f66b31d0.8e554",
+        "order": 1,
+        "disp": false,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "5801c7c.5f67038",
+        "type": "rpi-gpio out",
+        "z": "a148e93f.71c548",
+        "name": "GPIO4",
+        "pin": "7",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 1210,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "c42867e4.61fad8",
+        "type": "serial in",
+        "z": "a148e93f.71c548",
+        "name": "Arduino",
+        "serial": "4a8b6312.c2f36c",
+        "x": 130,
+        "y": 280,
+        "wires": [
+            [
+                "6cfcef2e.7837a"
+            ]
+        ]
+    },
+    {
+        "id": "6cfcef2e.7837a",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Read Temp",
+        "func": "msg.topic = \"Temperature\"\nvar temperature = Number(msg.payload);\ntemperature = temperature  - 19.0;\nif (flow.get('HeaterOn') == 1) temperature = temperature - 0.0;\nnewMsg1 = {'topic':'Temperature', 'payload':temperature};\nif (flow.get('blankTemperature')) return null;\nreturn newMsg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 340,
+        "wires": [
+            [
+                "4ae2a13c.0a8d4",
+                "5af1247f.2411bc",
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "57303339.71261c",
+        "type": "ui_switch",
+        "z": "a148e93f.71c548",
+        "name": "HeaterOn",
+        "label": "Heater",
+        "group": "6a19989.bafc168",
+        "order": 1,
+        "width": "4",
+        "height": "1",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "HeaterOn",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "x": 860,
+        "y": 500,
+        "wires": [
+            [
+                "35a74840.0d2948"
+            ]
+        ]
+    },
+    {
+        "id": "4ae2a13c.0a8d4",
+        "type": "ui_chart",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "group": "6a19989.bafc168",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "x": 550,
+        "y": 280,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "61279c78.ea4314",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "BlankPlot",
+        "func": "msg.payload = [];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 240,
+        "wires": [
+            [
+                "4ae2a13c.0a8d4"
+            ]
+        ]
+    },
+    {
+        "id": "5af1247f.2411bc",
+        "type": "ui_gauge",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "group": "6a19989.bafc168",
+        "order": 7,
+        "width": "8",
+        "height": "4",
+        "gtype": "gage",
+        "title": "",
+        "label": "units",
+        "format": "{{value | number:1}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "30",
+        "seg2": "70",
+        "x": 550,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "8a64247e.8a4b58",
+        "type": "ui_switch",
+        "z": "a148e93f.71c548",
+        "name": "Regulate",
+        "label": "Regulate",
+        "group": "6a19989.bafc168",
+        "order": 2,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "regulate",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 420,
+        "y": 660,
+        "wires": [
+            [
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "a7d0de1f.f334d",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Regulate Temperature",
+        "label": "Target",
+        "group": "6a19989.bafc168",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "regulateTemp",
+        "x": 380,
+        "y": 520,
+        "wires": [
+            [
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "6f3c8b2b.9bdd44",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Regulate Window",
+        "label": "Window",
+        "group": "6a19989.bafc168",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "regulateWindow",
+        "x": 390,
+        "y": 580,
+        "wires": [
+            [
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "1f7cdbae.3a6c24",
+        "type": "inject",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "topic": "regulateTemp",
+        "payload": "20",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "x": 130,
+        "y": 460,
+        "wires": [
+            [
+                "a7d0de1f.f334d",
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "b7ec2c73.19b0d",
+        "type": "inject",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "topic": "regulateWindow",
+        "payload": "4",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "6f3c8b2b.9bdd44",
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "87423354.f1248",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Regulation Control",
+        "func": "if (msg.topic == 'regulateTemp') context.set('regulateTemp', Number(msg.payload));\nif (msg.topic == 'regulateWindow') context.set('regulateWindow', Number(msg.payload));\nif (msg.topic == 'regulate')\n{\n    context.set('regulate', msg.payload);\n    if (!msg.payload)\n    {\n        var newMsg3 = {'topic':'HeaterOn', 'payload':0};\n        return [null, null, newMsg3];        \n    }\n}\nif (msg.topic != 'Temperature') return [null,null, null];\nvar regulateTemp =  context.get('regulateTemp');\nvar regulateWindow =  context.get('regulateWindow');\nvar regulate =  context.get('regulate');\nvar temperature = msg.payload;\nvar aboveWindow = false;\nif (temperature >  (regulateTemp + 0.5 * regulateWindow)) aboveWindow = true;\nvar belowWindow = false;\nif (temperature <  (regulateTemp - 0.5 * regulateWindow)) belowWindow = true;\nvar newMsg1 = {'topic':'aboveWindow', 'payload':aboveWindow};\nvar newMsg2 = {'topic':'belowWindow', 'payload':belowWindow};\nvar heaterOn = 0;\nvar newMsg3 = null;\nif (regulate)\n{\n    if (belowWindow) heaterOn = 1;\n    newMsg3 = {'topic':'HeaterOn', 'payload':heaterOn};\n}\nreturn [newMsg1, newMsg2, newMsg3];",
+        "outputs": 3,
+        "noerr": 0,
+        "x": 650,
+        "y": 420,
+        "wires": [
+            [
+                "57c51b58.18d674"
+            ],
+            [
+                "78f92015.c5902"
+            ],
+            [
+                "57303339.71261c"
+            ]
+        ]
+    },
+    {
+        "id": "6bfb8c81.9ea674",
+        "type": "ui_template",
+        "z": "a148e93f.71c548",
+        "group": "6a19989.bafc168",
+        "name": "Restart Plot",
+        "order": 9,
+        "width": "8",
+        "height": "1",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Restart Plot</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "61279c78.ea4314"
+            ]
+        ]
+    },
+    {
+        "id": "57c51b58.18d674",
+        "type": "ui_text",
+        "z": "a148e93f.71c548",
+        "group": "6a19989.bafc168",
+        "order": 6,
+        "width": "1",
+        "height": "1",
+        "name": "AboveWindow",
+        "label": "",
+        "format": "<font color={{(msg.payload == false) ? 'lime' : 'red'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
+        "layout": "col-center",
+        "x": 880,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "78f92015.c5902",
+        "type": "ui_text",
+        "z": "a148e93f.71c548",
+        "group": "6a19989.bafc168",
+        "order": 3,
+        "width": "1",
+        "height": "1",
+        "name": "BelowWindow",
+        "label": "",
+        "format": "<font color={{(msg.payload == false) ? 'lime' : 'red'}} size=\"6\" ><i class=\"fa fa-circle\"></i></font>",
+        "layout": "col-center",
+        "x": 880,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "e160ff36.c7d3e",
+        "type": "inject",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "topic": "regulate",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 660,
+        "wires": [
+            [
+                "8a64247e.8a4b58",
+                "87423354.f1248"
+            ]
+        ]
+    },
+    {
+        "id": "35a74840.0d2948",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Notify Heater",
+        "func": "flow.set('HeaterOn', msg.payload);\nvar lastState = context.get('HeaterOn') || 0;\nvar blankMsg = null;\nif (lastState != msg.payload)\n{\n    blankMsg = {'topic':'blankTemperature', 'payload':true};\n    flow.set('blankTemperature', true);\n}\ncontext.set('HeaterOn', msg.payload);\nreturn [msg,blankMsg];",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 1030,
+        "y": 500,
+        "wires": [
+            [
+                "5801c7c.5f67038"
+            ],
+            [
+                "7270a027.87f34"
+            ]
+        ]
+    },
+    {
+        "id": "4a5c2995.764d78",
+        "type": "inject",
+        "z": "a148e93f.71c548",
+        "name": "Init",
+        "topic": "Init",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 90,
+        "y": 740,
+        "wires": [
+            [
+                "ca3ecb4a.55d668"
+            ]
+        ]
+    },
+    {
+        "id": "ca3ecb4a.55d668",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Init",
+        "func": "flow.set('blankTemperature', false);\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 250,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7270a027.87f34",
+        "type": "delay",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 980,
+        "y": 580,
+        "wires": [
+            [
+                "7c6941be.dff56"
+            ]
+        ]
+    },
+    {
+        "id": "7c6941be.dff56",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Unblank Temp",
+        "func": "flow.set('blankTemperature', false);\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1200,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    }
+]
