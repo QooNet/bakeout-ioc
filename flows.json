@@ -10,7 +10,7 @@
         "id": "4a8b6312.c2f36c",
         "type": "serial-port",
         "z": "",
-        "serialport": "/dev/ttyACM0",
+        "serialport": "/dev/ttyS0",
         "serialbaud": "9600",
         "databits": "8",
         "parity": "none",
@@ -18,7 +18,7 @@
         "newline": "\\n",
         "bin": "false",
         "out": "char",
-        "addchar": false
+        "addchar": true
     },
     {
         "id": "2199cfd8.9aa6b",
@@ -93,7 +93,7 @@
             }
         },
         "site": {
-            "name": "Yggdrasil Logi",
+            "name": "Bakeout",
             "hideToolbar": "false",
             "allowSwipe": "false",
             "dateFormat": "DD/MM/YYYY",
@@ -127,6 +127,25 @@
         "disp": false,
         "width": "8",
         "collapse": false
+    },
+    {
+        "id": "8d078b84.5c4638",
+        "type": "ui_group",
+        "z": "",
+        "name": "Settings",
+        "tab": "440eea00.76b618",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "440eea00.76b618",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Settings",
+        "icon": "dashboard",
+        "order": 2
     },
     {
         "id": "5801c7c.5f67038",
@@ -535,7 +554,8 @@
         "y": 740,
         "wires": [
             [
-                "ca3ecb4a.55d668"
+                "ca3ecb4a.55d668",
+                "22b5c669.f6b98a"
             ]
         ]
     },
@@ -589,5 +609,351 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "c69e6aa.4738598",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Bandwidth",
+        "label": "Bandwidth",
+        "group": "8d078b84.5c4638",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "bandwidth",
+        "x": 830,
+        "y": 1080,
+        "wires": [
+            [
+                "8f41dab2.b4be48"
+            ]
+        ]
+    },
+    {
+        "id": "770cff5c.e62a",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Temp Cal",
+        "label": "Temp Cal",
+        "group": "8d078b84.5c4638",
+        "order": 2,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "calFactor",
+        "x": 820,
+        "y": 1120,
+        "wires": [
+            [
+                "8f41dab2.b4be48"
+            ]
+        ]
+    },
+    {
+        "id": "15c7b268.00babe",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Temp Offset",
+        "label": "Temp Offset",
+        "group": "8d078b84.5c4638",
+        "order": 3,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "offset",
+        "x": 830,
+        "y": 1160,
+        "wires": [
+            [
+                "8f41dab2.b4be48"
+            ]
+        ]
+    },
+    {
+        "id": "61b25693.5ad338",
+        "type": "ui_template",
+        "z": "a148e93f.71c548",
+        "group": "8d078b84.5c4638",
+        "name": "Set",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'yellow'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Set</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 250,
+        "y": 860,
+        "wires": [
+            [
+                "a90c83d7.9d3ba"
+            ]
+        ]
+    },
+    {
+        "id": "dabcb79.01f2e48",
+        "type": "ui_template",
+        "z": "a148e93f.71c548",
+        "group": "8d078b84.5c4638",
+        "name": "Refresh",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Refresh</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 160,
+        "y": 1120,
+        "wires": [
+            [
+                "44a18b43.558414"
+            ]
+        ]
+    },
+    {
+        "id": "22b5c669.f6b98a",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Init Settings",
+        "func": "var tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nglobal.set('tempSettings', tempSettings);\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 230,
+        "y": 940,
+        "wires": [
+            [
+                "bf07b9b2.a20c08",
+                "39c12fe0.f2fb"
+            ]
+        ]
+    },
+    {
+        "id": "bf07b9b2.a20c08",
+        "type": "delay",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "4",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 420,
+        "y": 940,
+        "wires": [
+            [
+                "484f0d8a.fa6674"
+            ]
+        ]
+    },
+    {
+        "id": "484f0d8a.fa6674",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Send Settings to Arduino",
+        "func": "var tempSettings = global.get('tempSettings');\nvar bandwidth = \n{\n    'topic':'bandwidth',\n    'payload':'bandwidth ' + tempSettings.payload.bandwidth.toString() + '!'\n}\nvar calFactor = \n{\n    'topic':'calFactor',\n    'payload':'calFactor ' + tempSettings.payload.calFactor.toString() + '!'\n}\nvar offset = \n{\n    'topic':'offset',\n    'payload':'offset ' + tempSettings.payload.offset.toString() + '!'\n}\n\nreturn [bandwidth,calFactor,offset];",
+        "outputs": 3,
+        "noerr": 0,
+        "x": 610,
+        "y": 940,
+        "wires": [
+            [
+                "8ee32599.a560e8"
+            ],
+            [
+                "22e560c3.cacfa"
+            ],
+            [
+                "4e4c7e84.e2921"
+            ]
+        ]
+    },
+    {
+        "id": "4e4c7e84.e2921",
+        "type": "delay",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 880,
+        "y": 980,
+        "wires": [
+            [
+                "e9259cb0.3f7cb"
+            ]
+        ]
+    },
+    {
+        "id": "22e560c3.cacfa",
+        "type": "delay",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 880,
+        "y": 940,
+        "wires": [
+            [
+                "e9259cb0.3f7cb"
+            ]
+        ]
+    },
+    {
+        "id": "8ee32599.a560e8",
+        "type": "delay",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "3",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 880,
+        "y": 900,
+        "wires": [
+            [
+                "e9259cb0.3f7cb"
+            ]
+        ]
+    },
+    {
+        "id": "e9259cb0.3f7cb",
+        "type": "serial out",
+        "z": "a148e93f.71c548",
+        "name": "Arduino",
+        "serial": "4a8b6312.c2f36c",
+        "x": 1080,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "3c45acee.733094",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Store Settings",
+        "func": "msg.topic = 'powerMeterSettings';\nglobal.set('powerMeterSettings', msg);\nglobal.set('stagedPowerMeterSettings', msg);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 840,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8f41dab2.b4be48",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Hold New settings",
+        "func": "var stagedTempSettings = global.get('stagedTempSettings');\nstagedTempSettings.payload[msg.topic] = Number(msg.payload);\nglobal.set('stagedTempSettings',stagedTempSettings)\nreturn stagedTempSettings;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1050,
+        "y": 1120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "39c12fe0.f2fb",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Parse Settings",
+        "func": "var bandwidth = \n{\n    'topic':'bandwidth',\n    'payload':msg.payload.bandwidth\n}\nvar calFactor = \n{\n    'topic':'calFactor',\n    'payload':msg.payload.calFactor\n}\nvar offset = \n{\n    'topic':'offset',\n    'payload':msg.payload.offset\n}\nreturn [bandwidth, calFactor, offset];",
+        "outputs": 3,
+        "noerr": 0,
+        "x": 560,
+        "y": 1120,
+        "wires": [
+            [
+                "c69e6aa.4738598"
+            ],
+            [
+                "770cff5c.e62a"
+            ],
+            [
+                "15c7b268.00babe"
+            ]
+        ]
+    },
+    {
+        "id": "a90c83d7.9d3ba",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Get Staged Settings",
+        "func": "var stagedTempSettings = global.get('stagedTempSettings');\nvar tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':stagedTempSettings.bandwidth,\n        'calFactor':stagedTempSettings.calFactor,\n        'offset':stagedTempSettings.offset\n    }\n};\nglobal.set('tempSettings', tempSettings);\nreturn tempSettings;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 860,
+        "wires": [
+            [
+                "484f0d8a.fa6674"
+            ]
+        ]
+    },
+    {
+        "id": "44a18b43.558414",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Get Original Settings",
+        "func": "var tempSettings = global.get('tempSettings');\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':tempSettings.bandwidth,\n        'calFactor':tempSettings.calFactor,\n        'offset':tempSettings.offset\n    }\n};\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 1120,
+        "wires": [
+            [
+                "39c12fe0.f2fb",
+                "2c91cdad.74aa32"
+            ]
+        ]
+    },
+    {
+        "id": "2c91cdad.74aa32",
+        "type": "debug",
+        "z": "a148e93f.71c548",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 760,
+        "y": 1240,
+        "wires": []
     }
 ]
