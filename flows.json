@@ -723,7 +723,7 @@
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Init Settings",
-        "func": "var tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nglobal.set('tempSettings', tempSettings);\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
+        "func": "var tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':17\n    }\n};\nglobal.set('tempSettings', tempSettings);\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
         "outputs": 1,
         "noerr": 0,
         "x": 230,
