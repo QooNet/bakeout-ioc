@@ -3,6 +3,13 @@
         "id": "a148e93f.71c548",
         "type": "tab",
         "label": "Bakeout",
+        "disabled": true,
+        "info": ""
+    },
+    {
+        "id": "f7dae6bd.3a0418",
+        "type": "tab",
+        "label": "bake01",
         "disabled": false,
         "info": ""
     },
@@ -129,23 +136,42 @@
         "collapse": false
     },
     {
-        "id": "8d078b84.5c4638",
+        "id": "41476019.347f5",
         "type": "ui_group",
         "z": "",
         "name": "Settings",
-        "tab": "440eea00.76b618",
+        "tab": "2647618a.51f56e",
         "order": 1,
         "disp": false,
         "width": "6",
         "collapse": false
     },
     {
-        "id": "440eea00.76b618",
+        "id": "2647618a.51f56e",
         "type": "ui_tab",
         "z": "",
         "name": "Settings",
         "icon": "dashboard",
         "order": 2
+    },
+    {
+        "id": "ad4f30cc.06d7a",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "qoonet-ioc-05.local",
+        "port": "1883",
+        "clientid": "bake01",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
     },
     {
         "id": "5801c7c.5f67038",
@@ -180,7 +206,7 @@
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Read Temp",
-        "func": "msg.topic = \"Temperature\"\nvar temperature = Number(msg.payload);\ntemperature = temperature  - 19.0;\nif (flow.get('HeaterOn') == 1) temperature = temperature - 0.0;\nnewMsg1 = {'topic':'Temperature', 'payload':temperature};\nif (flow.get('blankTemperature')) return null;\nreturn newMsg1;",
+        "func": "msg.topic = \"Temperature\"\nvar temperature = Number(msg.payload);\nnewMsg1 = {'topic':'Temperature', 'payload':temperature};\nif (flow.get('blankTemperature')) return null;\nreturn newMsg1;",
         "outputs": 1,
         "noerr": 0,
         "x": 310,
@@ -408,7 +434,7 @@
         "z": "a148e93f.71c548",
         "name": "",
         "topic": "regulateWindow",
-        "payload": "4",
+        "payload": "2",
         "payloadType": "num",
         "repeat": "",
         "crontab": "",
@@ -564,7 +590,7 @@
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Init",
-        "func": "flow.set('blankTemperature', false);\nreturn null;",
+        "func": "flow.set('blankTemperature', false);\nflow.set('sendingSettings', false);\nreturn null;",
         "outputs": 1,
         "noerr": 0,
         "x": 250,
@@ -579,7 +605,7 @@
         "z": "a148e93f.71c548",
         "name": "",
         "pauseType": "delay",
-        "timeout": "5",
+        "timeout": "2",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -611,119 +637,11 @@
         ]
     },
     {
-        "id": "c69e6aa.4738598",
-        "type": "ui_text_input",
-        "z": "a148e93f.71c548",
-        "name": "Bandwidth",
-        "label": "Bandwidth",
-        "group": "8d078b84.5c4638",
-        "order": 1,
-        "width": "6",
-        "height": "2",
-        "passthru": false,
-        "mode": "text",
-        "delay": "300",
-        "topic": "bandwidth",
-        "x": 830,
-        "y": 1080,
-        "wires": [
-            [
-                "8f41dab2.b4be48"
-            ]
-        ]
-    },
-    {
-        "id": "770cff5c.e62a",
-        "type": "ui_text_input",
-        "z": "a148e93f.71c548",
-        "name": "Temp Cal",
-        "label": "Temp Cal",
-        "group": "8d078b84.5c4638",
-        "order": 2,
-        "width": "6",
-        "height": "2",
-        "passthru": false,
-        "mode": "text",
-        "delay": "300",
-        "topic": "calFactor",
-        "x": 820,
-        "y": 1120,
-        "wires": [
-            [
-                "8f41dab2.b4be48"
-            ]
-        ]
-    },
-    {
-        "id": "15c7b268.00babe",
-        "type": "ui_text_input",
-        "z": "a148e93f.71c548",
-        "name": "Temp Offset",
-        "label": "Temp Offset",
-        "group": "8d078b84.5c4638",
-        "order": 3,
-        "width": "6",
-        "height": "2",
-        "passthru": false,
-        "mode": "text",
-        "delay": "300",
-        "topic": "offset",
-        "x": 830,
-        "y": 1160,
-        "wires": [
-            [
-                "8f41dab2.b4be48"
-            ]
-        ]
-    },
-    {
-        "id": "61b25693.5ad338",
-        "type": "ui_template",
-        "z": "a148e93f.71c548",
-        "group": "8d078b84.5c4638",
-        "name": "Set",
-        "order": 4,
-        "width": "3",
-        "height": "1",
-        "format": "<md-button \n    ng-style=\"{color:'black', background:'yellow'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Set</md-button>\n",
-        "storeOutMessages": false,
-        "fwdInMessages": false,
-        "templateScope": "local",
-        "x": 250,
-        "y": 860,
-        "wires": [
-            [
-                "a90c83d7.9d3ba"
-            ]
-        ]
-    },
-    {
-        "id": "dabcb79.01f2e48",
-        "type": "ui_template",
-        "z": "a148e93f.71c548",
-        "group": "8d078b84.5c4638",
-        "name": "Refresh",
-        "order": 4,
-        "width": "3",
-        "height": "1",
-        "format": "<md-button \n    ng-style=\"{color:'black', background:'lime'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Refresh</md-button>\n",
-        "storeOutMessages": false,
-        "fwdInMessages": false,
-        "templateScope": "local",
-        "x": 160,
-        "y": 1120,
-        "wires": [
-            [
-                "44a18b43.558414"
-            ]
-        ]
-    },
-    {
         "id": "22b5c669.f6b98a",
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Init Settings",
-        "func": "var tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':20\n    }\n};\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':5,\n        'calFactor':1,\n        'offset':17\n    }\n};\nglobal.set('tempSettings', tempSettings);\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
+        "func": "var initSettings = \n{\n    'topic':'initSettings',\n    'payload':\n    {\n        'bandwidth':0.5,\n        'calFactor':1,\n        'offset':30\n    }\n};\nglobal.set('initSettings', initSettings);\nreturn initSettings;",
         "outputs": 1,
         "noerr": 0,
         "x": 230,
@@ -731,7 +649,7 @@
         "wires": [
             [
                 "bf07b9b2.a20c08",
-                "39c12fe0.f2fb"
+                "585937da.4796c8"
             ]
         ]
     },
@@ -741,7 +659,7 @@
         "z": "a148e93f.71c548",
         "name": "",
         "pauseType": "delay",
-        "timeout": "4",
+        "timeout": "1",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -750,7 +668,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 420,
+        "x": 400,
         "y": 940,
         "wires": [
             [
@@ -763,7 +681,7 @@
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Send Settings to Arduino",
-        "func": "var tempSettings = global.get('tempSettings');\nvar bandwidth = \n{\n    'topic':'bandwidth',\n    'payload':'bandwidth ' + tempSettings.payload.bandwidth.toString() + '!'\n}\nvar calFactor = \n{\n    'topic':'calFactor',\n    'payload':'calFactor ' + tempSettings.payload.calFactor.toString() + '!'\n}\nvar offset = \n{\n    'topic':'offset',\n    'payload':'offset ' + tempSettings.payload.offset.toString() + '!'\n}\n\nreturn [bandwidth,calFactor,offset];",
+        "func": "var initSettings = global.get('initSettings');\nvar bandwidth = \n{\n    'topic':'bandwidth',\n    'payload':'bandwidth ' + initSettings.payload.bandwidth.toString() + '!'\n}\nvar calFactor = \n{\n    'topic':'calFactor',\n    'payload':'calFactor ' + initSettings.payload.calFactor.toString() + '!'\n}\nvar offset = \n{\n    'topic':'offset',\n    'payload':'offset ' + initSettings.payload.offset.toString() + '!'\n}\n\nreturn [bandwidth,calFactor,offset];",
         "outputs": 3,
         "noerr": 0,
         "x": 610,
@@ -786,8 +704,8 @@
         "z": "a148e93f.71c548",
         "name": "",
         "pauseType": "delay",
-        "timeout": "1",
-        "timeoutUnits": "seconds",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
         "rate": "1",
         "nbRateUnits": "1",
         "rateUnits": "second",
@@ -795,7 +713,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 880,
+        "x": 890,
         "y": 980,
         "wires": [
             [
@@ -809,8 +727,8 @@
         "z": "a148e93f.71c548",
         "name": "",
         "pauseType": "delay",
-        "timeout": "2",
-        "timeoutUnits": "seconds",
+        "timeout": "200",
+        "timeoutUnits": "milliseconds",
         "rate": "1",
         "nbRateUnits": "1",
         "rateUnits": "second",
@@ -818,7 +736,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 880,
+        "x": 890,
         "y": 940,
         "wires": [
             [
@@ -832,8 +750,8 @@
         "z": "a148e93f.71c548",
         "name": "",
         "pauseType": "delay",
-        "timeout": "3",
-        "timeoutUnits": "seconds",
+        "timeout": "300",
+        "timeoutUnits": "milliseconds",
         "rate": "1",
         "nbRateUnits": "1",
         "rateUnits": "second",
@@ -841,11 +759,12 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 880,
+        "x": 890,
         "y": 900,
         "wires": [
             [
-                "e9259cb0.3f7cb"
+                "e9259cb0.3f7cb",
+                "8b89a99f.500778"
             ]
         ]
     },
@@ -860,100 +779,648 @@
         "wires": []
     },
     {
-        "id": "3c45acee.733094",
+        "id": "f22be21c.1b89b",
+        "type": "inject",
+        "z": "a148e93f.71c548",
+        "name": "0.5 Hz",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "x": 700,
+        "y": 1040,
+        "wires": [
+            [
+                "38edb19b.ed955e"
+            ]
+        ]
+    },
+    {
+        "id": "38edb19b.ed955e",
         "type": "function",
         "z": "a148e93f.71c548",
-        "name": "Store Settings",
-        "func": "msg.topic = 'powerMeterSettings';\nglobal.set('powerMeterSettings', msg);\nglobal.set('stagedPowerMeterSettings', msg);\nreturn msg;",
+        "name": "Get Temperature",
+        "func": "if (flow.get('sendingSettings')) return null;\nvar temp = \n{\n    'topic':'temp',\n    'payload':'temp!'\n}\nreturn temp;",
         "outputs": 1,
         "noerr": 0,
-        "x": 840,
-        "y": 700,
+        "x": 890,
+        "y": 1040,
+        "wires": [
+            [
+                "e9259cb0.3f7cb"
+            ]
+        ]
+    },
+    {
+        "id": "e3449077.8b043",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Bandwidth",
+        "label": "Bandwidth",
+        "group": "41476019.347f5",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "bandwidth",
+        "x": 670,
+        "y": 1100,
+        "wires": [
+            [
+                "da778374.8c5b4"
+            ]
+        ]
+    },
+    {
+        "id": "456c4f19.fa6ec",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Temp Cal",
+        "label": "Temp Cal",
+        "group": "41476019.347f5",
+        "order": 2,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "calFactor",
+        "x": 660,
+        "y": 1140,
+        "wires": [
+            [
+                "da778374.8c5b4"
+            ]
+        ]
+    },
+    {
+        "id": "1f0adb80.810385",
+        "type": "ui_text_input",
+        "z": "a148e93f.71c548",
+        "name": "Temp Offset",
+        "label": "Temp Offset",
+        "group": "41476019.347f5",
+        "order": 3,
+        "width": "6",
+        "height": "2",
+        "passthru": false,
+        "mode": "text",
+        "delay": "300",
+        "topic": "offset",
+        "x": 670,
+        "y": 1180,
+        "wires": [
+            [
+                "da778374.8c5b4"
+            ]
+        ]
+    },
+    {
+        "id": "da778374.8c5b4",
+        "type": "function",
+        "z": "a148e93f.71c548",
+        "name": "Read New settings",
+        "func": "var initSettings = global.get('initSettings');\ninitSettings.payload[msg.topic] = Number(msg.payload);\nglobal.set('initSettings',initSettings)\nreturn initSettings;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 890,
+        "y": 1140,
         "wires": [
             []
         ]
     },
     {
-        "id": "8f41dab2.b4be48",
-        "type": "function",
-        "z": "a148e93f.71c548",
-        "name": "Hold New settings",
-        "func": "var stagedTempSettings = global.get('stagedTempSettings');\nstagedTempSettings.payload[msg.topic] = Number(msg.payload);\nglobal.set('stagedTempSettings',stagedTempSettings)\nreturn stagedTempSettings;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1050,
-        "y": 1120,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "39c12fe0.f2fb",
+        "id": "585937da.4796c8",
         "type": "function",
         "z": "a148e93f.71c548",
         "name": "Parse Settings",
         "func": "var bandwidth = \n{\n    'topic':'bandwidth',\n    'payload':msg.payload.bandwidth\n}\nvar calFactor = \n{\n    'topic':'calFactor',\n    'payload':msg.payload.calFactor\n}\nvar offset = \n{\n    'topic':'offset',\n    'payload':msg.payload.offset\n}\nreturn [bandwidth, calFactor, offset];",
         "outputs": 3,
         "noerr": 0,
-        "x": 560,
-        "y": 1120,
+        "x": 460,
+        "y": 1140,
         "wires": [
             [
-                "c69e6aa.4738598"
+                "e3449077.8b043"
             ],
             [
-                "770cff5c.e62a"
+                "456c4f19.fa6ec"
             ],
             [
-                "15c7b268.00babe"
+                "1f0adb80.810385"
             ]
         ]
     },
     {
-        "id": "a90c83d7.9d3ba",
+        "id": "32f5853b.089aaa",
         "type": "function",
         "z": "a148e93f.71c548",
-        "name": "Get Staged Settings",
-        "func": "var stagedTempSettings = global.get('stagedTempSettings');\nvar tempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':stagedTempSettings.bandwidth,\n        'calFactor':stagedTempSettings.calFactor,\n        'offset':stagedTempSettings.offset\n    }\n};\nglobal.set('tempSettings', tempSettings);\nreturn tempSettings;",
+        "name": "Set sending flag true",
+        "func": "flow.set('sendingSettings', true);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 440,
+        "x": 300,
         "y": 860,
         "wires": [
             [
-                "484f0d8a.fa6674"
+                "bf07b9b2.a20c08"
             ]
         ]
     },
     {
-        "id": "44a18b43.558414",
-        "type": "function",
+        "id": "8b89a99f.500778",
+        "type": "delay",
         "z": "a148e93f.71c548",
-        "name": "Get Original Settings",
-        "func": "var tempSettings = global.get('tempSettings');\nvar stagedTempSettings = \n{\n    'topic':'tempSettings',\n    'payload':\n    {\n        'bandwidth':tempSettings.bandwidth,\n        'calFactor':tempSettings.calFactor,\n        'offset':tempSettings.offset\n    }\n};\nglobal.set('stagedTempSettings', stagedTempSettings);\nreturn tempSettings;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 340,
-        "y": 1120,
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1050,
+        "y": 840,
         "wires": [
             [
-                "39c12fe0.f2fb",
-                "2c91cdad.74aa32"
+                "d89ec036.e9bcc"
             ]
         ]
     },
     {
-        "id": "2c91cdad.74aa32",
-        "type": "debug",
+        "id": "d89ec036.e9bcc",
+        "type": "function",
         "z": "a148e93f.71c548",
+        "name": "Set sending flag false",
+        "func": "flow.set('sendingSettings', false);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1240,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "61b25693.5ad338",
+        "type": "ui_template",
+        "z": "a148e93f.71c548",
+        "group": "41476019.347f5",
+        "name": "Set",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "format": "<md-button \n    ng-style=\"{color:'black', background:'yellow'}\"\n    ng-disabled='false'\n    ng-click=\"send({payload:true})\">Set</md-button>\n",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "templateScope": "local",
+        "x": 250,
+        "y": 800,
+        "wires": [
+            [
+                "32f5853b.089aaa"
+            ]
+        ]
+    },
+    {
+        "id": "79fb9dbb.1d7b84",
+        "type": "rpi-gpio out",
+        "z": "f7dae6bd.3a0418",
+        "name": "GPIO4",
+        "pin": "7",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 990,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "68027591.f6dcec",
+        "type": "serial in",
+        "z": "f7dae6bd.3a0418",
+        "name": "Arduino",
+        "serial": "4a8b6312.c2f36c",
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "fa59c418.635678"
+            ]
+        ]
+    },
+    {
+        "id": "fa59c418.635678",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Read Temp",
+        "func": "var temperature = Number(msg.payload);\nnewMsg1 = {'topic':'bake01/temperature', 'payload':temperature};\nif (flow.get('blankTemperature')) return null;\nreturn newMsg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [
+                "2457c57c.d5ffba",
+                "3efb1d68.be9742"
+            ]
+        ]
+    },
+    {
+        "id": "2457c57c.d5ffba",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Regulation Control",
+        "func": "if (msg.topic == 'bake01/regulateTemp') context.set('regulateTemp', Number(msg.payload));\nif (msg.topic == 'bake01/regulateWindow') context.set('regulateWindow', Number(msg.payload));\nif (msg.topic == 'bake01/regulate')\n{\n    context.set('regulate', msg.payload);\n    if (!msg.payload)\n    {\n        var newMsg3 = {'topic':'bake01/HeaterStatus', 'payload':0};\n        return [null, null, newMsg3];        \n    }\n}\nif (msg.topic != 'bake01/temperature') return [null,null, null];\nvar regulateTemp =  context.get('regulateTemp');\nvar regulateWindow =  context.get('regulateWindow');\nvar regulate =  context.get('regulate');\nvar temperature = msg.payload;\nvar aboveWindow = false;\nif (temperature >  (regulateTemp + 0.5 * regulateWindow)) aboveWindow = true;\nvar belowWindow = false;\nif (temperature <  (regulateTemp - 0.5 * regulateWindow)) belowWindow = true;\nvar newMsg1 = {'topic':'bake01/aboveWindow', 'payload':aboveWindow};\nvar newMsg2 = {'topic':'bake01/belowWindow', 'payload':belowWindow};\nvar heaterOn = 0;\nvar newMsg3 = null;\nif (regulate)\n{\n    if (belowWindow) heaterOn = 1;\n    newMsg3 = {'topic':'bake01/HeaterStatus', 'payload':heaterOn};\n}\nreturn [newMsg1, newMsg2, newMsg3];",
+        "outputs": 3,
+        "noerr": 0,
+        "x": 530,
+        "y": 80,
+        "wires": [
+            [
+                "f1981a8b.9f3718"
+            ],
+            [
+                "8412ba9b.712bb8"
+            ],
+            [
+                "9b50574.dc18fa8"
+            ]
+        ]
+    },
+    {
+        "id": "9b50574.dc18fa8",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Notify Heater",
+        "func": "flow.set('HeaterOn', msg.payload);\nvar lastState = context.get('HeaterOn') || 0;\nvar blankMsg = null;\nif (lastState != msg.payload)\n{\n    blankMsg = {'topic':'blankTemperature', 'payload':true};\n    flow.set('blankTemperature', true);\n}\ncontext.set('HeaterOn', msg.payload);\nreturn [msg,blankMsg];",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 770,
+        "y": 240,
+        "wires": [
+            [
+                "79fb9dbb.1d7b84",
+                "42dc8914.b54bc8"
+            ],
+            [
+                "126ad8c4.588a97"
+            ]
+        ]
+    },
+    {
+        "id": "126ad8c4.588a97",
+        "type": "delay",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 920,
+        "y": 260,
+        "wires": [
+            [
+                "2131fa65.778746"
+            ]
+        ]
+    },
+    {
+        "id": "2131fa65.778746",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Unblank Temp",
+        "func": "flow.set('blankTemperature', false);\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 900,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a3d0b983.ff6268",
+        "type": "serial out",
+        "z": "f7dae6bd.3a0418",
+        "name": "Arduino",
+        "serial": "4a8b6312.c2f36c",
+        "x": 480,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "c4d2b2bc.1b148",
+        "type": "inject",
+        "z": "f7dae6bd.3a0418",
+        "name": "0.5 Hz",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "x": 100,
+        "y": 680,
+        "wires": [
+            [
+                "20a9520a.0b0afe"
+            ]
+        ]
+    },
+    {
+        "id": "20a9520a.0b0afe",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Get Temperature",
+        "func": "if (flow.get('sendingSettings')) return null;\nvar temp = \n{\n    'topic':'temp',\n    'payload':'temp!'\n}\nreturn temp;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 680,
+        "wires": [
+            [
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "c311d18d.7d9c6",
+        "type": "delay",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 470,
+        "y": 500,
+        "wires": [
+            [
+                "f4729b58.723bd8"
+            ]
+        ]
+    },
+    {
+        "id": "f4729b58.723bd8",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Set sending flag false",
+        "func": "flow.set('sendingSettings', false);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 660,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "804c3696.fb7348",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/regulateTemp",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "db34d754.7b8878"
+            ]
+        ]
+    },
+    {
+        "id": "3efb1d68.be9742",
+        "type": "mqtt out",
+        "z": "f7dae6bd.3a0418",
+        "name": "bake01/temperature",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "broker": "ad4f30cc.06d7a",
+        "x": 540,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "d4f10c3a.092d2",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/regulateWindow",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "db34d754.7b8878"
+            ]
+        ]
+    },
+    {
+        "id": "5c5a5c91.f580c4",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/regulate",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "db34d754.7b8878"
+            ]
+        ]
+    },
+    {
+        "id": "f1981a8b.9f3718",
+        "type": "mqtt out",
+        "z": "f7dae6bd.3a0418",
+        "name": "bake01/aboveWindow",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "broker": "ad4f30cc.06d7a",
+        "x": 780,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "8412ba9b.712bb8",
+        "type": "mqtt out",
+        "z": "f7dae6bd.3a0418",
+        "name": "bake01/belowWindow",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "broker": "ad4f30cc.06d7a",
+        "x": 780,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "fbbd1824.06cb58",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/HeaterControl",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "9b50574.dc18fa8"
+            ]
+        ]
+    },
+    {
+        "id": "94d46025.97f3d",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/sendingSettings",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 150,
+        "y": 440,
+        "wires": [
+            [
+                "1f8959e8.1c7826"
+            ]
+        ]
+    },
+    {
+        "id": "1f8959e8.1c7826",
+        "type": "function",
+        "z": "f7dae6bd.3a0418",
+        "name": "Set sending flag true",
+        "func": "flow.set('sendingSettings', true);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8a407c84.d5945",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/offset",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 170,
+        "y": 620,
+        "wires": [
+            [
+                "78dd7148.01363",
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "60c5d54b.5c40ac",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/calFactor",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 160,
+        "y": 560,
+        "wires": [
+            [
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "bcae3297.b98f",
+        "type": "mqtt in",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/bandwidth",
+        "qos": "0",
+        "broker": "ad4f30cc.06d7a",
+        "x": 150,
+        "y": 500,
+        "wires": [
+            [
+                "c311d18d.7d9c6",
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "db34d754.7b8878",
+        "type": "json",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "2457c57c.d5ffba"
+            ]
+        ]
+    },
+    {
+        "id": "78dd7148.01363",
+        "type": "debug",
+        "z": "f7dae6bd.3a0418",
         "name": "",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
-        "x": 760,
-        "y": 1240,
+        "complete": "true",
+        "x": 500,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "42dc8914.b54bc8",
+        "type": "mqtt out",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "topic": "bake01/HeaterStatus",
+        "qos": "0",
+        "retain": "",
+        "broker": "ad4f30cc.06d7a",
+        "x": 1000,
+        "y": 220,
         "wires": []
     }
 ]
