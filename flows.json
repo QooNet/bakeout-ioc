@@ -258,7 +258,7 @@
         "z": "f7dae6bd.3a0418",
         "name": "Arduino",
         "serial": "4a8b6312.c2f36c",
-        "x": 480,
+        "x": 740,
         "y": 560,
         "wires": []
     },
@@ -304,8 +304,8 @@
         "z": "f7dae6bd.3a0418",
         "name": "",
         "pauseType": "delay",
-        "timeout": "100",
-        "timeoutUnits": "milliseconds",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
         "rateUnits": "second",
@@ -313,7 +313,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 470,
+        "x": 560,
         "y": 500,
         "wires": [
             [
@@ -329,7 +329,7 @@
         "func": "flow.set('sendingSettings', false);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 660,
+        "x": 780,
         "y": 500,
         "wires": [
             []
@@ -357,8 +357,8 @@
         "z": "f7dae6bd.3a0418",
         "name": "bake01/temperature",
         "topic": "",
-        "qos": "0",
-        "retain": "",
+        "qos": "2",
+        "retain": "false",
         "broker": "ad4f30cc.06d7a",
         "x": 540,
         "y": 20,
@@ -402,8 +402,8 @@
         "z": "f7dae6bd.3a0418",
         "name": "bake01/aboveWindow",
         "topic": "",
-        "qos": "0",
-        "retain": "",
+        "qos": "2",
+        "retain": "false",
         "broker": "ad4f30cc.06d7a",
         "x": 780,
         "y": 40,
@@ -415,8 +415,8 @@
         "z": "f7dae6bd.3a0418",
         "name": "bake01/belowWindow",
         "topic": "",
-        "qos": "0",
-        "retain": "",
+        "qos": "2",
+        "retain": "false",
         "broker": "ad4f30cc.06d7a",
         "x": 780,
         "y": 100,
@@ -480,7 +480,7 @@
         "y": 620,
         "wires": [
             [
-                "a3d0b983.ff6268"
+                "76399cc6.4db224"
             ]
         ]
     },
@@ -496,7 +496,7 @@
         "y": 560,
         "wires": [
             [
-                "a3d0b983.ff6268"
+                "ac8244ef.3352f8"
             ]
         ]
     },
@@ -512,8 +512,7 @@
         "y": 500,
         "wires": [
             [
-                "c311d18d.7d9c6",
-                "a3d0b983.ff6268"
+                "4405f34b.c937dc"
             ]
         ]
     },
@@ -539,11 +538,81 @@
         "z": "f7dae6bd.3a0418",
         "name": "",
         "topic": "bake01/HeaterStatus",
-        "qos": "0",
-        "retain": "",
+        "qos": "2",
+        "retain": "false",
         "broker": "ad4f30cc.06d7a",
         "x": 1000,
         "y": 220,
         "wires": []
+    },
+    {
+        "id": "76399cc6.4db224",
+        "type": "delay",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 620,
+        "wires": [
+            [
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "ac8244ef.3352f8",
+        "type": "delay",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 580,
+        "wires": [
+            [
+                "a3d0b983.ff6268"
+            ]
+        ]
+    },
+    {
+        "id": "4405f34b.c937dc",
+        "type": "delay",
+        "z": "f7dae6bd.3a0418",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "3",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 540,
+        "wires": [
+            [
+                "a3d0b983.ff6268",
+                "c311d18d.7d9c6"
+            ]
+        ]
     }
 ]
